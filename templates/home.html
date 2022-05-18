@@ -1,0 +1,377 @@
+
+{% extends 'main.html' %}
+{% block content %}
+	<title>To-Do List</title>
+
+<!-- <div class="container my-4 text-center" style = "width: 38rem">
+    Title:
+    <input id="title" type="text" class = "form-control" placeholder = "Enter task title" name="title">
+    Description:
+    <textarea class="form-control" id="desc" rows="3"></textarea>
+    <hr>
+    <input id="submit" class = "btn btn-primary" type="submit"> 
+</div>  
+<div class="container my-4 text-left" style = "width: 38rem">
+    <div id = "wrapper">
+
+    </div>
+</div>  
+
+<div class="container my-4 text-center" style = "width: 38 rem">
+    <div id = "form-wrapper">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+function getCookie(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getCookie('csrftoken');
+        var activeItem = null
+        var list_snapshot = []
+
+    buildList() 
+    function buildList(){
+        var wrapper = document.getElementById('wrapper');
+        var url = "http://127.0.0.1:8000/api/tasklist";
+        fetch(url)
+        .then((resp) => resp.json())
+        .then(function(data) {
+            console.log('Data: ', data)
+            var list = data
+            for(var i in list) {
+                var item = `
+                    <div class="container my-4 text-left" style = "width: 38rem">
+                        <p>${i}. <span class = "my-4">${list[i].title}</span>
+                        </p>
+                        <span class = " my-2">${list[i].desc}</span>
+                    </div>
+                `
+                wrapper.innerHTML += item
+            }
+        })
+    }
+
+    var form = document.getElementById('form-wrapper')
+		form.addEventListener('submit', function(e){
+			e.preventDefault()
+			console.log('Form submitted')
+			var url = 'http://127.0.0.1:8000/api/taskcreate/'
+			if (activeItem != null){
+				var url = `http://127.0.0.1:8000/api/taskupdate/${activeItem.id}/`
+				activeItem = null
+			}
+
+
+
+			var title = document.getElementById('title').value
+			fetch(url, {
+				method:'POST',
+				headers:{
+					'Content-type':'application/json',
+					'X-CSRFToken':csrftoken,
+				},
+				body:JSON.stringify({'title':title})
+			}
+			).then(function(response){
+				buildList()
+				document.getElementById('form').reset()
+			})
+		})
+
+</script> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
+<style type="text/css">
+    body{
+      background: rgb(54,217,182);
+      background: linear-gradient(90deg, rgb(217, 54, 174) 0%, rgb(122, 8, 58) 43%, rgba(0,212,255,1) 100%);
+    }
+
+
+    h1, h2, h3, h4, h5, p, span, strike{
+      font-family: 'Montserrat', sans-serif;
+
+    }
+
+
+    #task-container{
+      max-width:600px;
+      margin:0 auto;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      background-color: rgb(94, 1, 85);
+      
+      margin-top:100px;
+      margin-bottom:100px;
+
+      justify-content: space-around;
+      align-items: flex-start;
+
+    }
+
+    #form-wrapper{
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0rem;
+      border-bottom: 1px solid  #1c1616;
+      background-color: rgb(65, 12, 71);
+      box-shadow: 0 3px 8px rgba(185, 99, 231, 0.25);
+       padding:40px;
+    }
+
+    #submit{
+      background-color: rgb(130, 5, 202);
+      border-radius: 1;
+      border:0;
+      color: #FFFFFF;
+    }
+
+    .flex-wrapper{
+        display: flex;
+    }
+
+    .task-wrapper{
+          margin:5px;
+          padding: 5px;
+          padding:20px;
+          cursor: pointer;
+          border-bottom: 1px solid  #2f2e2e;
+          color: #686868;
+        }
+
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <div id="task-container">
+        <div id="form-wrapper">
+            <form id="form">    
+                <div class="container text-center my-4">
+                    <div style="">
+                        <input id="title" class="form-control" type="text" name="title" placeholder="Add task">
+                        <br>
+                        <textarea class="form-control" id="desc" rows="3"></textarea>
+                    </div>
+                    <div class="my-4 text-center">
+                        <input id="submit" class="btn" type="submit" >
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="list-wrapper">
+        
+        </div>	
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    var activeItem = null
+    var list_snapshot = []
+
+    buildList()
+
+    function buildList(){
+        var wrapper = document.getElementById('list-wrapper')
+        //wrapper.innerHTML = ''
+
+
+
+        var url = 'http://127.0.0.1:8000/api/tasklist'
+
+        fetch(url)
+        .then((resp) => resp.json())
+        .then(function(data){
+            console.log('Data:', data)
+
+            var list = data
+            for (var i in list){
+
+
+                try{
+                    document.getElementById(`data-row-${i}`).remove()
+                }catch(err){
+
+                }
+        
+
+
+                var title = `<span class="title">${list[i].title}</span>
+                `
+                //<span class="title">${list[i].desc}</span>
+                if (list[i].completed == true){
+                    title = `<strike class="title">${list[i].title}</strike>
+                    
+                    `// <strike class="title"><br>${list[i].desc}</strike>
+                }
+
+                var item = `
+                    <div id="data-row-${i}" class="task-wrapper flex-wrapper">
+                        <div style="flex:7">
+                            ${title}<br>
+                        </div>
+                        <div style="flex:1">
+                            <button class="btn btn-sm btn-outline-info edit">Edit </button>
+                        </div>
+                        <div style="flex:1">
+                            <button class="btn btn-sm btn-outline-dark delete">-</button>
+                        </div>
+                    </div>
+                `
+                wrapper.innerHTML += item
+
+            }
+
+            if (list_snapshot.length > list.length){
+                for (var i = list.length; i < list_snapshot.length; i++){
+                    document.getElementById(`data-row-${i}`).remove()
+                }
+            }
+
+            list_snapshot = list
+
+
+            for (var i in list){
+                var editBtn = document.getElementsByClassName('edit')[i]
+                var deleteBtn = document.getElementsByClassName('delete')[i]
+                var title = document.getElementsByClassName('title')[i]
+
+                editBtn.addEventListener('click', (function(item){
+                    return function(){
+                        editItem(item)
+                    }
+                })(list[i]))
+
+
+                deleteBtn.addEventListener('click', (function(item){
+                    return function(){
+                        deleteItem(item)
+                    }
+                })(list[i]))
+
+
+
+                
+                title.addEventListener('click', (function(item){
+                    return function(){
+                        strikeUnstrike(item)
+                    }
+                })(list[i]))
+
+
+            }
+
+
+        })
+    }
+
+
+    var form = document.getElementById('form-wrapper')
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('Form submitted')
+        var url = 'http://127.0.0.1:8000/api/taskcreate'
+        if (activeItem != null){
+            var url = `http://127.0.0.1:8000/api/taskupdate/${activeItem.id}`
+            activeItem = null
+        }
+
+
+
+        var title = document.getElementById('title').value
+        var desc = document.getElementById('desc').value
+        fetch(url, {
+            method:'POST',
+            headers:{
+                'Content-type':'application/json',
+                'X-CSRFToken':csrftoken,
+            },
+            body:JSON.stringify({'title':title,
+            'desc': desc
+        })
+        }
+        ).then(function(response){
+            buildList()
+            document.getElementById('form').reset()
+        })
+    })
+
+
+
+
+    function editItem(item){
+        console.log('Item clicked:', item)
+        activeItem = item
+        document.getElementById('title').value = activeItem.desc
+    }
+
+
+    function deleteItem(item){
+        console.log('Delete clicked')
+        fetch(`http://127.0.0.1:8000/api/taskdelete/${item.id}`, {
+            method:'DELETE', 
+            headers:{
+                'Content-type':'application/json',
+                'X-CSRFToken':csrftoken,
+            }
+        }).then((response) => {
+            buildList()
+        })
+    }
+
+    function strikeUnstrike(item){
+        console.log('Strike clicked')
+
+        item.done= !item.done
+        fetch(`http://127.0.0.1:8000/api/taskupdate/${item.id}`, {
+            method:'POST', 
+            headers:{
+                'Content-type':'application/json',
+                'X-CSRFToken':csrftoken,
+            },
+            body:JSON.stringify({'title':item.title, 'desc': item.desc, 'done':item.done})
+        }).then((response) => {
+            buildList()
+        })
+    }
+
+
+</script>
+{% endblock %}
